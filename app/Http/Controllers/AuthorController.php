@@ -46,7 +46,7 @@ class AuthorController extends Controller
         $author->email = $request->email;
         $author->hp = $request->hp;
         $author->save();
-        return response()->json($author, 202); 
+        return response()->json($author, 202);
     }
 
     /**
@@ -106,5 +106,8 @@ class AuthorController extends Controller
             "message" => "Data Author Telah dihapus",
             "data" => $author
         ]);
+    }
+    public function search($name){
+        return Author::where('name', 'like', '%'.$name.'%')->get();
     }
 }

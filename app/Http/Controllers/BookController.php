@@ -76,14 +76,15 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return Book::find($id)->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'author' => $request->author,
-            'publisher' => $request->publisher,
-            'date_of_issue' => $request->date_of_issue
-
-        ]);
+        $book = Book::find($id);
+        $book->title = $request->title;
+        $book->description = $request->description;
+        $book->author = $request->author;
+        $book->publisher = $request->publisher;
+        $book->author = $request->author;
+        $book->date_of_issue = $request->date_of_issue;
+        $book->save();
+        return response()->json($book, 420);
     }
 
     /**
@@ -94,6 +95,14 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        return Book::find($id)->delete();
+        $book = Book::findOrFail($id);
+        $book->delete();
+        return response()->json([
+            "message" => "Data Buku Telah dihapus",
+            "data" => $book
+        ]);
+    }
+    public function search($title){
+        return Book::where('title', 'like', '%'.$title.'%')->get();
     }
 }
